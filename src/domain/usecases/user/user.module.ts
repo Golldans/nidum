@@ -1,5 +1,5 @@
 import { Module } from "@nestjs/common";
-import { CreateUserUseCase } from "./create";
+import { CreateUserUseCase } from "./implementation/create";
 
 @Module({
     imports: [],

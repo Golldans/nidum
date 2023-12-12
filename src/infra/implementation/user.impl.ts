@@ -10,7 +10,7 @@ export class UserImpl {
         private readonly userRepository: Repository<UserEntity>,
     ) {}
 
-    async create(user: UserEntity): Promise<UserEntity> {
+    async create(user: Partial<UserEntity>): Promise<UserEntity> {
         return await this.userRepository.save(user);
     }
 
@@ -22,8 +22,8 @@ export class UserImpl {
         return await this.userRepository.findOne({ where: criteria });
     }
 
-    async update(criteria: Partial<UserEntity>, task: UserEntity): Promise<UserEntity> {
-        await this.userRepository.update(criteria, task);
+    async update(criteria: Partial<UserEntity>, user_data: Partial<UserEntity>): Promise<UserEntity> {
+        await this.userRepository.update(criteria, user_data);
         return await this.findOne(criteria);
     }
 

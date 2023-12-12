@@ -1,5 +1,5 @@
 import { Controller, Get } from "@nestjs/common";
-import { CreateUserUseCase } from "src/domain/usecases/user/create";
+import { CreateUserUseCase } from "src/domain/usecases/user/implementation/create";
 
 @Controller("user")
 export class UserController {

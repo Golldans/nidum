@@ -10,7 +10,7 @@ export class TaskImpl {
         private readonly taskRepository: Repository<TaskEntity>,
     ) {}
 
-    async create(task: TaskEntity): Promise<TaskEntity> {
+    async create(task: Partial<TaskEntity>): Promise<TaskEntity> {
         return await this.taskRepository.save(task);
     }
 
@@ -22,7 +22,7 @@ export class TaskImpl {
         return await this.taskRepository.findOne({ where: criteria });
     }
 
-    async update(criteria: Partial<TaskEntity>, task: TaskEntity): Promise<TaskEntity> {
+    async update(criteria: Partial<TaskEntity>, task: Partial<TaskEntity>): Promise<TaskEntity> {
         await this.taskRepository.update(criteria, task);
         return await this.findOne(criteria);
     }
