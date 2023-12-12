@@ -6,7 +6,7 @@ export class ShowTaskUseCase {
     constructor(private readonly taskImplementation: TaskImpl) {}
 
     async call(task_id: number): Promise<any> {
-        const task = await this.taskImplementation.findOne({ id: task_id });
+        const task = await this.taskImplementation.findOne(task_id);
         return task;
     }
 }

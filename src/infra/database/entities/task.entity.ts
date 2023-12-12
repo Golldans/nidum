@@ -26,6 +26,7 @@ export class TaskEntity {
         type: 'boolean',
         name: 'done',
         nullable: false,
+        default: false,
     })
     done: boolean;
 

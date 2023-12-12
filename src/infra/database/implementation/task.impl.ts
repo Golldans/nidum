@@ -18,13 +18,13 @@ export class TaskImpl {
         return await this.taskRepository.find();
     }
 
-    async findOne(criteria: Partial<TaskEntity>): Promise<TaskEntity> {
-        return await this.taskRepository.findOne({ where: criteria });
+    async findOne(task_id: number): Promise<TaskEntity> {
+        return await this.taskRepository.findOne({ where: { id: task_id } });
     }
 
     async update(criteria: Partial<TaskEntity>, task: Partial<TaskEntity>): Promise<TaskEntity> {
         await this.taskRepository.update(criteria, task);
-        return await this.findOne(criteria);
+        return await this.findOne(criteria.id);
     }
 
     async delete(criteria: Partial<TaskEntity>): Promise<void> {
