@@ -20,6 +20,7 @@ export class UserController {
 
     @Post("/create")
     create(@Body() body: any) {
-        console.log(body)
+        const user_created = this.createUserUseCase.call(body);
+        return user_created;
     }
 }

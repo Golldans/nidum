@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
-import { UserEntity } from "src/infra/entities/user.entity";
-import { UserImpl } from "src/infra/implementation/user.impl";
+import { UserEntity } from "src/infra/database/entities/user.entity";
+import { UserImpl } from "src/infra/database/implementation/user.impl";
 
 @Injectable()
 export class ListUsersUseCase {

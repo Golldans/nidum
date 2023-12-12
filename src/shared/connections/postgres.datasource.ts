@@ -12,7 +12,7 @@ const PostgresDataSource = new DataSource({
     password: process.env.PG_PASSWORD,
     database: process.env.PG_DATABASE,
     entities: [process.env.PG_ENTITIES],
-    migrations: ['dist/infra/migrations/*.js'],
+    migrations: ['dist/infra/database/migrations/*.js'],
     synchronize: false,
 })
 

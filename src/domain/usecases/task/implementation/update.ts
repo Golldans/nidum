@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
-import { TaskEntity } from "src/infra/entities/task.entity";
-import { TaskImpl } from "src/infra/implementation/task.impl";
+import { TaskEntity } from "src/infra/database/entities/task.entity";
+import { TaskImpl } from "src/infra/database/implementation/task.impl";
 
 @Injectable()
 export class UpdateTaskUseCase {
