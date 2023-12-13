@@ -8,6 +8,7 @@ async function bootstrap() {
   
   const config = new DocumentBuilder().setTitle('Nidum')
     .setDescription('Task management API for demonstration purposes')
+    .addBearerAuth()
     .setVersion('1.0')
     .addTag('tasks')
     .build();
