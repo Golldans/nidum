@@ -8,7 +8,7 @@ import { FindTaskUseCase } from "src/domain/usecases/task/implementation/find";
 import { ShowTaskUseCase } from "src/domain/usecases/task/implementation/show";
 import { UpdateTaskUseCase } from "src/domain/usecases/task/implementation/update";
 import { CreateTaskDto } from "./dto/task/create.dto";
-import { ApiParam, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { ApiConsumes, ApiParam, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { UpdateTaskDto } from "./dto/task/update.dto";
 import { IDecodedJwt } from "./dto/jwt/decoded.dto";
 
@@ -24,6 +24,7 @@ export class TaskController {
     ) { }
 
     @Post("/store")
+    @ApiConsumes('application/json')
     @ApiResponse({ status: 201, description: 'Task created' })
     @ApiResponse({ status: 401, description: 'An inalid json was provided' })
     @ApiResponse({ status: 400, description: 'Invalid data provided as body' })
@@ -46,6 +47,7 @@ export class TaskController {
         name: 'id',
         type: 'number'
     })
+    @ApiConsumes('application/json')
     @ApiResponse({ status: 201, description: 'Task updated' })
     @ApiResponse({ status: 401, description: 'An inalid json was provided' })
     @ApiResponse({ status: 403, description: 'The request was valid, but this specific task does not belong to the user' })
