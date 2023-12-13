@@ -14,6 +14,7 @@ import { JwtAuthGuard } from "./guards/jwt-auth.guard";
             imports: [ConfigModule],
             useFactory: async (configService: ConfigService) => ({
                 secret: configService.getOrThrow<string>('JWT_SECRET'),
+                signOptions: { expiresIn: '1d' }
             }),
             inject: [ConfigService]
         }),
