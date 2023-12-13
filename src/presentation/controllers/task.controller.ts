@@ -11,6 +11,7 @@ import { CreateTaskDto } from "./dto/task/create.dto";
 import { ApiConsumes, ApiParam, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { UpdateTaskDto } from "./dto/task/update.dto";
 import { IDecodedJwt } from "./dto/jwt/decoded.dto";
+import { TaskEntity } from "src/infra/database/entities/task.entity";
 
 @ApiTags('tasks')
 @Controller("task")
@@ -30,7 +31,7 @@ export class TaskController {
     @ApiResponse({ status: 400, description: 'Invalid data provided as body' })
     @ApiResponse({ status: 500, description: 'Internal server error' })
     @UseGuards(JwtAuthGuard)
-    async store(@Request() req:Request, @Body() body: CreateTaskDto): Promise<any> {
+    async store(@Request() req:Request, @Body() body: CreateTaskDto): Promise<TaskEntity> {
         const decoded_jwt = this.jwtService.decode(req.headers['authorization'].split(' ')[1]);
 
         const task_payload = {
@@ -53,7 +54,7 @@ export class TaskController {
     @ApiResponse({ status: 403, description: 'The request was valid, but this specific task does not belong to the user' })
     @ApiResponse({ status: 500, description: 'Internal server error' })
     @UseGuards(JwtAuthGuard)
-    async update(@Request() req: Request, @Body() body: UpdateTaskDto, @Param() raw_id: { id: number }): Promise<any> {
+    async update(@Request() req: Request, @Body() body: UpdateTaskDto, @Param() raw_id: { id: number }): Promise<TaskEntity> {
         const decoded_jwt: IDecodedJwt = this.jwtService.decode(req.headers['authorization'].split(' ')[1]);
         const updated_task = this.updateTaskUseCase.call({ id: raw_id.id, id_user: decoded_jwt.id_user }, body);
         return updated_task;
@@ -64,7 +65,7 @@ export class TaskController {
     @ApiResponse({ status: 401, description: 'An inalid json was provided' })
     @ApiResponse({ status: 500, description: 'Internal server error' })
     @UseGuards(JwtAuthGuard)
-    async list(@Request() req: Request): Promise<any> {
+    async list(@Request() req: Request): Promise<TaskEntity[]> {
         const tasks = await this.findTaskUseCase.call();
         return tasks;
     }
@@ -78,7 +79,7 @@ export class TaskController {
     @ApiResponse({ status: 401, description: 'An inalid json was provided' })
     @ApiResponse({ status: 500, description: 'Internal server error' })
     @UseGuards(JwtAuthGuard)
-    async show(@Param() raw_id: { id: number }): Promise<any> {
+    async show(@Param() raw_id: { id: number }): Promise<TaskEntity> {
         const id = raw_id.id;
         const task = await this.showTaskUseCase.call(id);
         return task;
@@ -94,7 +95,7 @@ export class TaskController {
     @ApiResponse({ status: 403, description: 'The request was valid, but this specific task does not belong to the user' })
     @ApiResponse({ status: 500, description: 'Internal server error' })
     @UseGuards(JwtAuthGuard)
-    async delete(@Request() req:Request, @Param() raw_id: { id: number; }): Promise<any> {
+    async delete(@Request() req:Request, @Param() raw_id: { id: number; }): Promise<void> {
         const decoded_jwt: IDecodedJwt = this.jwtService.decode(req.headers['authorization'].split(' ')[1]);
         const deleted_task = await this.deleteTaskUseCase.call(raw_id.id, decoded_jwt.id_user);
         return deleted_task;

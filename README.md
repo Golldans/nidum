@@ -19,8 +19,6 @@
     <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
   <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
 </p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
 ## Sobre as tecnologias utilizadas
 
@@ -36,6 +34,10 @@ Todas as tecnologias se mostraram necessárias em algum momento na criação des
 
 ### - Passport
 - Simplesmente uma mão na roda para todo tipo de autenticação criada em node. Recentemente usei para autenticações bearer, basic e jwt, porém a gama do passport evolui para praticamente todo tipo de tecnologia de autenticação existe. Como disse anteriormente, levo a questão de segurança muito a sério, então esse é meu amigão de longa data pra auth.
+
+
+### - Menção Honrosa : class-validator e class-transformer
+- No momento que eu escrevo isso, faltam 10 minutos pro fim do prazo, então não tenho tempo de implementar eles. Porém, caso possível, seriam perfeitos para prevenir problemas a nível de rede, já que a tipagem dessas controllers ainda podem ser facilmente burladas.
 
 
 ## Sobre o JWT

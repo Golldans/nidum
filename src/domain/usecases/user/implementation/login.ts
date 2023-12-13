@@ -2,12 +2,13 @@ import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { UserImpl } from "src/infra/database/implementation/user.impl";
 import * as argon from 'argon2';
 import { AuthService } from "src/auth/auth.service";
+import { ISucessFulLogin } from "../types/sucessful_login.interface";
 
 @Injectable()
 export class LoginUserUseCase {
     constructor(private readonly userImplementation: UserImpl, private readonly authService: AuthService) {}
 
-    async call(user: string, password: string): Promise<any> {
+    async call(user: string, password: string): Promise<ISucessFulLogin> {
         const database_user = await this.userImplementation.findOne({ username: user, });
 
         if (!database_user) {
