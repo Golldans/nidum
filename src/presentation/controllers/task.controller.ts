@@ -7,12 +7,12 @@ import { DeleteTaskUseCase } from "src/domain/usecases/task/implementation/delet
 import { FindTaskUseCase } from "src/domain/usecases/task/implementation/find";
 import { ShowTaskUseCase } from "src/domain/usecases/task/implementation/show";
 import { UpdateTaskUseCase } from "src/domain/usecases/task/implementation/update";
+import { CreateTaskDto } from "./dto/task/create.dto";
+import { ApiParam, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { UpdateTaskDto } from "./dto/task/update.dto";
+import { IDecodedJwt } from "./dto/jwt/decoded.dto";
 
-export interface IDecodedJwt {
-    id_user: number;
-    username: string;
-}
-
+@ApiTags('tasks')
 @Controller("task")
 export class TaskController {
     constructor(private readonly createTaskUseCase: CreateTaskUseCase,
@@ -24,8 +24,12 @@ export class TaskController {
     ) { }
 
     @Post("/store")
+    @ApiResponse({ status: 201, description: 'Task created' })
+    @ApiResponse({ status: 401, description: 'An inalid json was provided' })
+    @ApiResponse({ status: 400, description: 'Invalid data provided as body' })
+    @ApiResponse({ status: 500, description: 'Internal server error' })
     @UseGuards(JwtAuthGuard)
-    async store(@Request() req:Request, @Body() body: any): Promise<any> {
+    async store(@Request() req:Request, @Body() body: CreateTaskDto): Promise<any> {
         const decoded_jwt = this.jwtService.decode(req.headers['authorization'].split(' ')[1]);
 
         const task_payload = {
@@ -38,14 +42,25 @@ export class TaskController {
     }
 
     @Put("/update/:id")
+    @ApiParam({
+        name: 'id',
+        type: 'number'
+    })
+    @ApiResponse({ status: 201, description: 'Task updated' })
+    @ApiResponse({ status: 401, description: 'An inalid json was provided' })
+    @ApiResponse({ status: 403, description: 'The request was valid, but this specific task does not belong to the user' })
+    @ApiResponse({ status: 500, description: 'Internal server error' })
     @UseGuards(JwtAuthGuard)
-    async update(@Request() req: Request, @Body() body: any, @Param() raw_id: { id: number }): Promise<any> {
+    async update(@Request() req: Request, @Body() body: UpdateTaskDto, @Param() raw_id: { id: number }): Promise<any> {
         const decoded_jwt: IDecodedJwt = this.jwtService.decode(req.headers['authorization'].split(' ')[1]);
         const updated_task = this.updateTaskUseCase.call({ id: raw_id.id, id_user: decoded_jwt.id_user }, body);
         return updated_task;
     }
 
     @Get("/list")
+    @ApiResponse({ status: 200, description: 'Sucessfully listed all tasks' })
+    @ApiResponse({ status: 401, description: 'An inalid json was provided' })
+    @ApiResponse({ status: 500, description: 'Internal server error' })
     @UseGuards(JwtAuthGuard)
     async list(@Request() req: Request): Promise<any> {
         const tasks = await this.findTaskUseCase.call();
@@ -53,6 +68,13 @@ export class TaskController {
     }
 
     @Get("/show/:id")
+    @ApiParam({
+        name: 'id',
+        type: 'number'
+    })
+    @ApiResponse({ status: 200, description: 'Sucessfully listed a single or less tasks' })
+    @ApiResponse({ status: 401, description: 'An inalid json was provided' })
+    @ApiResponse({ status: 500, description: 'Internal server error' })
     @UseGuards(JwtAuthGuard)
     async show(@Param() raw_id: { id: number }): Promise<any> {
         const id = raw_id.id;
@@ -61,6 +83,14 @@ export class TaskController {
     }
 
     @Delete("/delete/:id")
+    @ApiParam({
+        name: 'id',
+        type: 'number'
+    })
+    @ApiResponse({ status: 200, description: 'Sucessfully deleted a task' })
+    @ApiResponse({ status: 401, description: 'An inalid json was provided' })
+    @ApiResponse({ status: 403, description: 'The request was valid, but this specific task does not belong to the user' })
+    @ApiResponse({ status: 500, description: 'Internal server error' })
     @UseGuards(JwtAuthGuard)
     async delete(@Request() req:Request, @Param() raw_id: { id: number; }): Promise<any> {
         const decoded_jwt: IDecodedJwt = this.jwtService.decode(req.headers['authorization'].split(' ')[1]);

@@ -1,4 +1,4 @@
-import { Inject, Injectable } from "@nestjs/common";
+import { ForbiddenException, Inject, Injectable } from "@nestjs/common";
 import { POSTGRES_REPOSITORIES } from "src/shared/constants/orm";
 import { Repository } from "typeorm";
 import { TaskEntity } from "../entities/task.entity";
@@ -23,6 +23,11 @@ export class TaskImpl {
     }
 
     async update(criteria: Partial<TaskEntity>, task: Partial<TaskEntity>): Promise<TaskEntity> {
+        const previous_task = await this.findOne(criteria.id);
+        if (previous_task.id_user !== criteria.id_user) {
+            throw new ForbiddenException('This task does not belong to the user');
+        }
+    
         await this.taskRepository.update(criteria, task);
         return await this.findOne(criteria.id);
     }
